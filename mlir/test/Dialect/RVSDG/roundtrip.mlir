@@ -1,7 +1,8 @@
 // RUN: mlir-opt %s | mlir-opt | FileCheck %s
 
-module {
-    // CHECK: [[PREDICATE:%.+]] = arith.constant 0 : index
+// CHECK-LABEL: rvsdg_empty_gamma_node
+func @rvsdg_empty_gamma_node() -> (index){
+    // CHECK: [[PREDICATE:%.+]]
     // CHECK: rvsdg.gammaNode
     // CHECK-SAME = ([[PREDICATE]]) 
     // CHECK-SAME () : [{
@@ -10,4 +11,5 @@ module {
     
     %predicate = arith.constant 0 : index
     %0 = rvsdg.gammaNode (%predicate) () : [{}, {}] -> i32
+    return %predicate :index
 }
