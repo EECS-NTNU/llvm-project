@@ -24,6 +24,7 @@
 // CHECK-NEXT: pdl_interp
 // CHECK-NEXT: quant
 // CHECK-NEXT: rocdl
+// CHECK-NEXT: rvsdg
 // CHECK-NEXT: scf
 // CHECK-NEXT: shape
 // CHECK-NEXT: sparse_tensor
