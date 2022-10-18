@@ -24,7 +24,8 @@ using namespace rvsdg;
  **/
 void printTypedParamList(OpAsmPrinter &p, Operation *op, OperandRange operands,
                          TypeRange types) {
-
+  
+  p << "(";
   int param_count = std::min(operands.size(), types.size());
   for (int i = 0; i < param_count; ++i) {
     if (i != 0) {
@@ -34,6 +35,7 @@ void printTypedParamList(OpAsmPrinter &p, Operation *op, OperandRange operands,
     p << " ";
     p.printOperand(operands[i]);
   }
+  p << ")";
 }
 
 ParseResult

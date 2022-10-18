@@ -22,5 +22,5 @@ def RVSDG_GammaNode: RVSDG_Op<"gammaNode", [IsolatedFromAbove]> {
         VariadicRegion<AnyRegion>:$additionalRegions
     );
 
-    let assemblyFormat = "attr-dict `(` $predicate `)` `(` custom<TypedParamList>($inputs, type($inputs)) `)` `:` `[` regions `]` `=` `` `>` type(results)";
+    let assemblyFormat = "attr-dict `(` $predicate `)` custom<TypedParamList>($inputs, type($inputs)) `:` `[` regions `]` `->` type(results)";
 }
