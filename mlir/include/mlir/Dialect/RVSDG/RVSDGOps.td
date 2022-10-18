@@ -1,12 +1,9 @@
 
-include "mlir/Dialect/RVSDG/RVSDGBase.td"
+include "mlir/Dialect/RVSDG/RVSDGDialect.td"
 include "mlir/IR/BuiltinTypes.td"
 
 class RVSDG_Op<string mnemonic, list<Trait> traits = []> :
     Op<RVSDG_Dialect, mnemonic, traits>;
-
-def RVSDG_LambdaNode: RVSDG_Op<"lambdaNode"> {
-}
 
 def RVSDG_GammaNode: RVSDG_Op<"gammaNode", [IsolatedFromAbove]> {
 
