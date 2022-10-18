@@ -53,6 +53,7 @@
 #include "mlir/Dialect/Vector/IR/VectorOps.h"
 #include "mlir/Dialect/Vector/Transforms/BufferizableOpInterfaceImpl.h"
 #include "mlir/Dialect/X86Vector/X86VectorDialect.h"
+#include "mlir/Dialect/RVSDG/Dialect.h.inc"
 #include "mlir/IR/Dialect.h"
 
 namespace mlir {
@@ -91,7 +92,8 @@ inline void registerAllDialects(DialectRegistry &registry) {
                   sparse_tensor::SparseTensorDialect,
                   tensor::TensorDialect,
                   tosa::TosaDialect,
-                  x86vector::X86VectorDialect>();
+                  x86vector::X86VectorDialect,
+                  rvsdg::RVSDGDialect>();
   // clang-format on
   arith::registerBufferizableOpInterfaceExternalModels(registry);
   linalg::registerBufferizableOpInterfaceExternalModels(registry);
