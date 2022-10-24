@@ -62,18 +62,20 @@ parseTypedParamList(OpAsmParser &parser,
   return ParseResult::success();
 }
 
-LogicalResult GammaOutput::verify(){
+LogicalResult GammaOutput::verify() {
   auto parent = cast<GammaNode>((*this)->getParentOp());
   const auto &results = parent.getResults();
-  if (getNumOperands() != results.size()){
-    return emitOpError("has ") << getNumOperands() << " operands, but parent node outputs "
+  if (getNumOperands() != results.size()) {
+    return emitOpError("has ")
+           << getNumOperands() << " operands, but parent node outputs "
     << results.size();
   }
 
-  for(unsigned i = 0; i < results.size(); ++i){
-    if (getOperand(i).getType() != results[i].getType()){
-      return emitError() << "type of output operand " << i
-      << " (" << getOperand(i).getType() << ") does not match node output type ("
+  for (unsigned i = 0; i < results.size(); ++i) {
+    if (getOperand(i).getType() != results[i].getType()) {
+      return emitError() << "type of output operand " << i << " ("
+                         << getOperand(i).getType()
+                         << ") does not match node output type ("
       << results[i].getType() << ")";
     }
   }
