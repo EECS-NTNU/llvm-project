@@ -1,5 +1,6 @@
 // RUN: mlir-opt %s | mlir-opt | FileCheck %s
 
+// COM: Round-trip of an empty gamma node
 // CHECK-LABEL: rvsdg_empty_gamma_node
 func @rvsdg_empty_gamma_node() -> (index){
     // CHECK: [[PREDICATE:%.+]]

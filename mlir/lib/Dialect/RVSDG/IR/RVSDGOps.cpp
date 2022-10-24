@@ -1,7 +1,7 @@
-#include "mlir/IR/OpImplementation.h"
-#include "mlir/IR/Builders.h"
 #include "mlir/Dialect/StandardOps/IR/Ops.h"
+#include "mlir/IR/Builders.h"
 #include "mlir/IR/FunctionImplementation.h"
+#include "mlir/IR/OpImplementation.h"
 
 #include "mlir/Dialect/RVSDG/Dialect.h.inc"
 
@@ -26,16 +26,15 @@ using namespace rvsdg;
  **/
 void printTypedParamList(OpAsmPrinter &p, Operation *op, OperandRange operands,
                          TypeRange types) {
-  
   p << "(";
   int param_count = std::min(operands.size(), types.size());
   for (int i = 0; i < param_count; ++i) {
     if (i != 0) {
       p << ", ";
     }
-    p.printType(types[i]);
-    p << " ";
     p.printOperand(operands[i]);
+    p << ": ";
+    p.printType(types[i]);
   }
   p << ")";
 }
@@ -45,20 +44,29 @@ parseTypedParamList(OpAsmParser &parser,
                     SmallVectorImpl<OpAsmParser::OperandType> &operands,
                     SmallVectorImpl<Type> &types) {
 
-  auto parseTypedParam = [&]() -> ParseResult {
-    Type result;
-    if (parser.parseType(result).succeeded()) {
-      return ParseResult::failure();
-    };
-    OpAsmParser::OperandType operand_res;
-    if (parser.parseOperand(operand_res)) {
+  if (parser.parseLParen().failed()) {
+    return ParseResult::failure();
+  }
+  unsigned int index = 0;
+  while (parser.parseOptionalRParen().failed()) {
+    if (index != 0) {
+      if (parser.parseComma().failed()) {
+        return ParseResult::failure();
+      }
+    }
+    mlir::OpAsmParser::OperandType operand;
+    if (parser.parseOperand(operand).failed()) {
       return ParseResult::failure();
     }
-    return ParseResult::success();
-  };
+    Type type;
+    if (parser.parseColonType(type).failed()) {
+      return ParseResult::failure();
+    }
+    operands.push_back(operand);
+    types.push_back(type);
+    ++index;
+  }
 
-  parser.parseCommaSeparatedList(OpAsmParser::Delimiter::Paren,
-                                 parseTypedParam);
   return ParseResult::success();
 }
 
@@ -68,7 +76,7 @@ LogicalResult GammaOutput::verify() {
   if (getNumOperands() != results.size()) {
     return emitOpError("has ")
            << getNumOperands() << " operands, but parent node outputs "
-    << results.size();
+           << results.size();
   }
 
   for (unsigned i = 0; i < results.size(); ++i) {
@@ -76,7 +84,7 @@ LogicalResult GammaOutput::verify() {
       return emitError() << "type of output operand " << i << " ("
                          << getOperand(i).getType()
                          << ") does not match node output type ("
-      << results[i].getType() << ")";
+                         << results[i].getType() << ")";
     }
   }
 

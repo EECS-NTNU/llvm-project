@@ -36,7 +36,7 @@ def RVSDG_GammaOutput: RVSDG_Op<"gammaOutput", [
         Variadic<AnyType>:$outputValues
     );
 
-    let assemblyFormat = "attr-dict ($outputValues^ `:` type($outputValues))?";
+    let assemblyFormat = "attr-dict custom<TypedParamList>($outputValues, type($outputValues))";
     let hasVerifier = 1;
 }
 
