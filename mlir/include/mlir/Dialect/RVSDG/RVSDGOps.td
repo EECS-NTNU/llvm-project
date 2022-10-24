@@ -1,4 +1,6 @@
 
+include "mlir/Interfaces/ControlFlowInterfaces.td"
+
 include "mlir/Dialect/RVSDG/RVSDGDialect.td"
 include "mlir/IR/BuiltinTypes.td"
 
@@ -24,3 +26,17 @@ def RVSDG_GammaNode: RVSDG_Op<"gammaNode", [IsolatedFromAbove]> {
 
     let assemblyFormat = "attr-dict `(` $predicate `)` custom<TypedParamList>($inputs, type($inputs)) `:` `[` regions `]` `->` type(results)";
 }
+
+def RVSDG_GammaOutput: RVSDG_Op<"gammaOutput", [
+        HasParent<"mlir::rvsdg::GammaNode">,
+        Terminator
+    ]> {
+
+    let arguments = (ins
+        Variadic<AnyType>:$outputValues
+    );
+
+    let assemblyFormat = "attr-dict ($outputValues^ `:` type($outputValues))?";
+    let hasVerifier = 1;
+}
+

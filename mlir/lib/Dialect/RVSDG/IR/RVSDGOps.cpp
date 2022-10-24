@@ -1,5 +1,7 @@
 #include "mlir/IR/OpImplementation.h"
 #include "mlir/IR/Builders.h"
+#include "mlir/Dialect/StandardOps/IR/Ops.h"
+#include "mlir/IR/FunctionImplementation.h"
 
 #include "mlir/Dialect/RVSDG/Dialect.h.inc"
 
@@ -58,6 +60,25 @@ parseTypedParamList(OpAsmParser &parser,
   parser.parseCommaSeparatedList(OpAsmParser::Delimiter::Paren,
                                  parseTypedParam);
   return ParseResult::success();
+}
+
+LogicalResult GammaOutput::verify(){
+  auto parent = cast<GammaNode>((*this)->getParentOp());
+  const auto &results = parent.getResults();
+  if (getNumOperands() != results.size()){
+    return emitOpError("has ") << getNumOperands() << " operands, but parent node outputs "
+    << results.size();
+  }
+
+  for(unsigned i = 0; i < results.size(); ++i){
+    if (getOperand(i).getType() != results[i].getType()){
+      return emitError() << "type of output operand " << i
+      << " (" << getOperand(i).getType() << ") does not match node output type ("
+      << results[i].getType() << ")";
+    }
+  }
+
+  return success();
 }
 
 #define GET_OP_CLASSES
