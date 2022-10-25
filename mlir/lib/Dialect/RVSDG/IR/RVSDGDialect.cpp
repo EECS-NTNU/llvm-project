@@ -4,6 +4,8 @@
 #include "mlir/IR/Dialect.h"
 
 #include "mlir/Dialect/RVSDG/Dialect.h.inc"
+#include "mlir/Dialect/RVSDG/RVSDGTraits.h"
+
 #define GET_OP_CLASSES
 #include "mlir/Dialect/RVSDG/Ops.h.inc"
 

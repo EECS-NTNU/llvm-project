@@ -3,6 +3,7 @@
 #include "mlir/IR/FunctionImplementation.h"
 #include "mlir/IR/OpImplementation.h"
 
+#include "mlir/Dialect/RVSDG/RVSDGTraits.h"
 #include "mlir/Dialect/RVSDG/Dialect.h.inc"
 
 #define GET_OP_CLASSES

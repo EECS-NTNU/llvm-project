@@ -1,13 +1,14 @@
 
 include "mlir/Interfaces/ControlFlowInterfaces.td"
+include "mlir/IR/BuiltinTypes.td"
 
 include "mlir/Dialect/RVSDG/RVSDGDialect.td"
-include "mlir/IR/BuiltinTypes.td"
+include "mlir/Dialect/RVSDG/RVSDGTraits.td"
 
 class RVSDG_Op<string mnemonic, list<Trait> traits = []> :
     Op<RVSDG_Dialect, mnemonic, traits>;
 
-def RVSDG_GammaNode: RVSDG_Op<"gammaNode", [IsolatedFromAbove]> {
+def RVSDG_GammaNode: RVSDG_Op<"gammaNode", [PassThroughOperands]> {
 
     let arguments = (ins
         Index:$predicate,
